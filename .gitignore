@@ -1,0 +1,18 @@
+# Ambiente Python
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Variáveis de ambiente
+.env
+
+# Documentação interna de processo
+internos/
+
+# Referências utilizadas durante a construção
+docs/referencias/
