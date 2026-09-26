@@ -1,324 +1,201 @@
 # Projeto Avaliativo RH — Análise Exploratória de Dados
 
-**Aluna:** Maria Laura Correa da Silva  
-**Turma:** T3  
-**Curso:** Visualização de Dados e Business Intelligence  
-**Base:** FreeSQL — Esquema Human Resources (HR)
+**Maria Laura Correa da Silva · T3 · Visualização de Dados e Business Intelligence**
 
 ![Fluxo da análise](imagens/fluxo_analise_rh_geral.png)
 
-## Sobre o projeto
+> Análise exploratória da base **Human Resources (HR)**, utilizando SQL para
+> extração e relacionamento dos dados e Python para análise e visualização.
 
-Este projeto realiza uma análise exploratória dos dados de Recursos Humanos da base **Human Resources (HR)** disponibilizada no FreeSQL.
+---
 
-A análise utiliza **SQL** para extração e relacionamento dos dados e **Python** para exploração, estatística descritiva e visualização.
+## Navegação
 
-O projeto foi desenvolvido a partir de dois eixos:
+| | |
+|---|---|
+| [🎯 Objetivo](#objetivo) | [🗃️ Dados](#dados-e-consultas) |
+| [🔗 Consultas SQL](#consultas-sql) | [📊 Análise](#análise) |
+| [💡 Insights](#insights) | [⚠️ Limitações](#limitações) |
+| [📁 Estrutura](#estrutura-do-projeto) | [▶️ Execução](#como-executar) |
 
-1. **Salários por departamento e cargo**
-2. **Funcionários, salários e distribuição geográfica**
-
-O fluxo adotado foi:
-
-```text
-FreeSQL / HR
-     ↓
-Conhecimento da fonte e das tabelas
-     ↓
-Consultas SQL
-     ↓
-CSV
-     ↓
-Python / EDA
-     ↓
-Estatística descritiva
-     ↓
-Visualizações
-     ↓
-Insights
-     ↓
-Interpretação e limitações
-```
+---
 
 ## Objetivo
 
-Investigar a distribuição dos salários e dos funcionários da base HR, observando diferenças entre cargos, departamentos e regiões.
+Investigar a distribuição dos salários e dos funcionários da base HR,
+observando diferenças entre cargos, departamentos e regiões.
 
-A análise é descritiva e busca identificar padrões que possam orientar perguntas e investigações posteriores na área de Recursos Humanos.
+A análise é descritiva e busca identificar padrões que possam orientar
+perguntas e investigações posteriores em Recursos Humanos.
 
-## Fonte e escopo dos dados
+[↑ Voltar à navegação](#navegação)
 
-A análise parte do esquema **Human Resources (HR)** no FreeSQL.
+---
 
-Seis tabelas foram utilizadas nas duas consultas:
+## Dados e consultas
 
-- `HR.EMPLOYEES`
-- `HR.DEPARTMENTS`
-- `HR.JOBS`
-- `HR.LOCATIONS`
-- `HR.COUNTRIES`
-- `HR.REGIONS`
+A análise utiliza seis tabelas do schema HR:
 
-A tabela `JOB_HISTORY` foi reconhecida no schema, mas ficou fora do escopo das consultas deste projeto.
-
-![Schema de escopo](imagens/schema_hr_escopo.png)
-
-### Relacionamentos utilizados
-
-A Query 1 utiliza:
-
-```text
-EMPLOYEES
-   ├── DEPARTMENTS
-   └── JOBS
-```
-
-A Query 2 amplia o percurso geográfico:
-
-```text
-EMPLOYEES
-   ↓
-DEPARTMENTS
-   ↓
-LOCATIONS
-   ↓
-COUNTRIES
-   ↓
-REGIONS
-```
+`EMPLOYEES` · `DEPARTMENTS` · `JOBS` · `LOCATIONS` · `COUNTRIES` · `REGIONS`
 
 ![Schema técnico](imagens/schema_tecnico_rh.png)
 
-## Consultas SQL
+### Query 1
 
-### Query 1 — salários por departamento e cargo
+**Salários por departamento e cargo**
 
-Relaciona `EMPLOYEES`, `DEPARTMENTS` e `JOBS`.
+`EMPLOYEES → DEPARTMENTS → JOBS`
 
-A consulta utiliza dois `LEFT JOIN` e aplica o filtro:
+### Query 2
 
-```sql
-WHERE e.salary IS NOT NULL
-```
+**Funcionários, salários e distribuição geográfica**
 
-Arquivo:
+`EMPLOYEES → DEPARTMENTS → LOCATIONS → COUNTRIES → REGIONS`
 
-```text
-sql/query_1.sql
-```
-
-Resultado:
+Os resultados foram exportados para:
 
 ```text
 data/query_01.csv
-```
-
-### Query 2 — funcionários e salários por região
-
-Relaciona `EMPLOYEES`, `DEPARTMENTS`, `JOBS`, `LOCATIONS`, `COUNTRIES` e `REGIONS`.
-
-A consulta utiliza `LEFT JOIN` ao longo do relacionamento e aplica:
-
-```sql
-WHERE e.salary IS NOT NULL
-```
-
-Arquivo:
-
-```text
-sql/query_2.sql
-```
-
-Resultado:
-
-```text
 data/query_02.csv
 ```
 
-Também foram mantidos arquivos auxiliares de reconhecimento das constraints e dos relacionamentos:
+[↑ Voltar à navegação](#navegação)
+
+---
+
+## Consultas SQL
+
+As consultas principais estão em:
+
+```text
+sql/query_1.sql
+sql/query_2.sql
+```
+
+As duas consultas utilizam `LEFT JOIN` e `WHERE`, conforme os requisitos
+do projeto.
+
+Também foram mantidos arquivos auxiliares utilizados durante o
+reconhecimento das tabelas e relacionamentos:
 
 ```text
 sql/query_1_reconhecimento_constraints.sql
 sql/query_2_reconhecimento_dados.sql
 ```
 
-## Análise exploratória — Python
+[↑ Voltar à navegação](#navegação)
 
-Os resultados das consultas foram exportados para CSV e analisados no notebook:
+---
+
+## Análise
+
+Os resultados das consultas foram exportados para CSV e analisados em
+Python no notebook:
 
 ```text
 notebooks/analise_rh.ipynb
 ```
 
-A análise verificou:
+Foram utilizadas:
 
-- estrutura dos dados;
-- quantidade de registros;
-- tipos das variáveis;
-- primeiros registros;
-- valores ausentes;
-- duplicidades;
-- estatística descritiva.
+`Pandas` · `NumPy` · `Matplotlib` · `Seaborn`
 
-Foram utilizadas medidas como:
+A análise exploratória considera estrutura dos dados, valores ausentes,
+duplicidades, estatística descritiva e distribuição dos salários.
 
-- média;
-- mediana;
-- mínimo;
-- máximo;
-- quartis;
-- desvio padrão.
+[↑ Voltar à navegação](#navegação)
 
-A análise combinou estatística e visualização para evitar a interpretação da média salarial de forma isolada.
+---
 
-## Visualizações
+## Insights
 
-A análise consolidou quatro leituras principais:
+### Distribuição salarial
 
-```text
-1. Distribuição dos salários
-        ↓
-2. Média salarial por cargo
-        ↓
-3. Média salarial por departamento
-        ↓
-4. Distribuição salarial por região
-```
-
-### Distribuição dos salários
-
-O histograma mostra a concentração dos salários e a presença de valores mais elevados.
-
-Na base analisada:
-
-- **média:** aproximadamente R$ 6.461,83
-- **mediana:** R$ 6.200,00
-- **máximo:** R$ 24.000,00
-
-![Distribuição dos salários](imagens/distribuicao_salarios.png)
-
-A maior concentração está nas faixas salariais inferiores, enquanto poucos valores mais altos ampliam a distribuição.
-
-### Média salarial por cargo
-
-A comparação entre cargos mostrou diferenças nas médias salariais. A quantidade de funcionários de cada cargo também foi considerada na interpretação, pois alguns grupos possuem poucos registros.
-
-### Média salarial por departamento
-
-Foram observadas diferenças entre os departamentos, incluindo:
-
-| Departamento | Média salarial |
+| Medida | Resultado |
 |---|---:|
-| Executive | R$ 19.333 |
-| Accounting | R$ 10.154 |
-| Public Relations | R$ 10.000 |
-| Marketing | R$ 9.500 |
-| Sales | R$ 8.956 |
-| Finance | R$ 8.601 |
-| Human Resources | R$ 6.500 |
-| IT | R$ 5.760 |
-| Administration | R$ 4.400 |
-| Purchasing | R$ 4.150 |
-| Shipping | R$ 3.476 |
+| Média | R$ 6.461,83 |
+| Mediana | R$ 6.200,00 |
+| Máximo | R$ 24.000,00 |
 
-As médias devem ser interpretadas em conjunto com a quantidade de registros de cada departamento.
+A comparação entre média e mediana mostra que a média, isoladamente, não é
+suficiente para compreender a distribuição dos salários.
 
-### Distribuição salarial por região
-
-A base possui:
-
-- **107 funcionários**
-- **70 nas Américas**
-- **36 na Europa**
-- **1 registro sem informação geográfica**
-
-Entre os registros com informação regional:
+### Distribuição regional
 
 | Região | Funcionários | Média | Mediana |
 |---|---:|---:|---:|
 | Europa | 36 | R$ 8.916,67 | R$ 8.900,00 |
 | Américas | 70 | R$ 5.191,67 | R$ 3.300,00 |
 
-O boxplot foi utilizado para comparar distribuição, dispersão e valores extremos entre as regiões.
+Na análise regional, a diferença entre média e mediana é maior nas
+Américas do que na Europa.
 
-## Principais resultados
+### Insight principal
 
-A análise mostrou diferenças salariais entre cargos, departamentos e regiões, além de diferentes níveis de concentração e dispersão dos salários.
+**O contexto da distribuição importa.**
 
-A comparação entre média e mediana mostrou que a média, isoladamente, não é suficiente para compreender a distribuição dos valores, principalmente diante da presença de salários elevados.
+Cargo, departamento, região, quantidade de funcionários, média, mediana,
+dispersão e valores extremos precisam ser observados em conjunto para uma
+leitura mais cuidadosa dos dados de RH.
 
-Na análise regional, a diferença entre média e mediana é maior nas Américas do que na Europa, enquanto a distribuição salarial das Américas apresenta maior dispersão.
+[↑ Voltar à navegação](#navegação)
 
-## Principal insight
-
-O principal insight está na própria **distribuição dos salários**.
-
-Quando cargo, departamento, região, quantidade de funcionários, média, mediana e distribuição são observados em conjunto, surgem padrões que não aparecem quando olhamos apenas para a média salarial.
-
-A leitura, portanto, prioriza o **contexto da distribuição**, e não apenas a identificação do grupo com maior média.
-
-## Perspectiva de impacto
-
-Os dados ajudam a localizar diferenças e padrões que podem ser investigados antes de uma decisão sobre remuneração ou estrutura organizacional.
-
-Nesse sentido, a análise contribui para:
-
-- fazer perguntas melhores;
-- direcionar novas investigações;
-- dar mais contexto às decisões de RH.
-
-Esta análise não estabelece relações de causa e efeito.
+---
 
 ## Limitações
 
-Os resultados são descritivos e representam apenas os dados disponíveis na base analisada.
+A análise é descritiva e não estabelece relações de causa e efeito.
 
-As diferenças observadas não permitem estabelecer relações de causa e efeito.
+Alguns grupos possuem poucos funcionários e existe um registro sem
+informação geográfica. Esses fatores devem ser considerados na interpretação
+dos resultados.
 
-Também devem ser considerados:
+[↑ Voltar à navegação](#navegação)
 
-- alguns grupos possuem poucos funcionários;
-- médias de grupos pequenos devem ser interpretadas com cautela;
-- existe um registro sem informações geográficas;
-- outras variáveis que poderiam ajudar a explicar diferenças salariais não fazem parte desta análise.
+---
 
-## Sugestão de melhoria
+## Estrutura do projeto
 
-Uma evolução possível é ampliar a análise com outras variáveis ou fontes de dados que permitam investigar com maior profundidade as diferenças salariais.
+```text
+07_Projeto_Avaliativo_MariaLauraCorreaDaSilva_T3/
+│
+├── data/
+│   ├── query_01.csv
+│   └── query_02.csv
+│
+├── docs/
+│   └── referencias/
+│
+├── imagens/
+│   ├── fluxo_analise_rh_geral.png
+│   ├── schema_hr_escopo.png
+│   └── schema_tecnico_rh.png
+│
+├── notebooks/
+│   └── analise_rh.ipynb
+│
+├── sql/
+│   ├── query_1.sql
+│   ├── query_1_reconhecimento_constraints.sql
+│   ├── query_2.sql
+│   └── query_2_reconhecimento_dados.sql
+│
+├── .gitignore
+└── README.md
+```
 
-Possibilidades futuras incluem:
+[↑ Voltar à navegação](#navegação)
 
-- análise complementar de outras dimensões organizacionais;
-- incorporação de novas variáveis;
-- novas visualizações;
-- integração com outras fontes de dados.
-
-A melhoria deve ser orientada por uma pergunta analítica clara, e não pela adição de complexidade sem finalidade.
-
-## Tecnologias e bibliotecas
-
-- SQL
-- FreeSQL
-- Python 3.14.5
-- Jupyter Notebook
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Git
-- GitHub
+---
 
 ## Como executar
 
 ### Pré-requisitos
 
-- Python 3.14.5 ou versão compatível
-- Git
-- Jupyter Notebook ou ambiente compatível
+- Python 3.14.5 ou compatível
+- Jupyter Notebook
 
 ### Instalação
-
-Crie um ambiente virtual:
 
 ```bash
 python -m venv .venv
@@ -336,80 +213,38 @@ Instale as bibliotecas:
 pip install pandas numpy matplotlib seaborn jupyter
 ```
 
-Abra o Jupyter:
+### Execução
 
 ```bash
 jupyter notebook
 ```
 
-Execute:
+Abra:
 
 ```text
 notebooks/analise_rh.ipynb
 ```
 
-Os arquivos CSV utilizados pelo notebook devem permanecer em:
+Os arquivos CSV utilizados pelo notebook devem permanecer na pasta:
 
 ```text
 data/
 ```
 
-## Estrutura do projeto
+[↑ Voltar à navegação](#navegação)
 
-```text
-07_Projeto_Avaliativo_MariaLauraCorreaDaSilva_T3/
-│
-├── data/
-│   ├── query_01.csv
-│   └── query_02.csv
-│
-├── docs/
-│   └── referencias/
-│
-├── imagens/
-│   ├── fluxo_analise_rh_geral.png
-│   ├── schema_hr_escopo.png
-│   ├── schema_tecnico_rh.png
-│   └── distribuicao_salarios.png
-│
-├── notebooks/
-│   └── analise_rh.ipynb
-│
-├── sql/
-│   ├── query_1.sql
-│   ├── query_1_reconhecimento_constraints.sql
-│   ├── query_2.sql
-│   └── query_2_reconhecimento_dados.sql
-│
-├── .gitignore
-└── README.md
-```
+---
 
-## Versionamento
+## Tecnologias
 
-O projeto utiliza Git para controle de versão.
+`SQL` · `Python` · `Pandas` · `NumPy` · `Matplotlib` · `Seaborn` · `Git` · `GitHub`
 
-A organização adotada durante o desenvolvimento utiliza branches por etapa:
+---
 
-```text
-main
-  ↑
-develop
-  ↑
-feature/sql
-feature/analise
-```
+## Apresentação
 
-As alterações são desenvolvidas e versionadas por etapa antes da integração da versão final.
+**Vídeo:** `[link será inserido após a gravação]`
 
-## Apresentação em vídeo
+---
 
-**Link do vídeo:** `[INSERIR LINK DO VÍDEO]`
-
-O vídeo apresenta o problema, as consultas SQL, a análise exploratória, as visualizações, os principais resultados, o insight e as limitações.
-
-## Conclusão
-
-A análise exploratória permitiu observar como os salários se distribuem entre cargos, departamentos e regiões.
-
-O principal aprendizado foi que uma média isolada não é suficiente para compreender uma distribuição salarial. A leitura conjunta de quantidade de registros, média, mediana, dispersão e valores extremos fornece mais contexto para interpretar os dados de RH.
+[↑ Voltar ao topo](#projeto-avaliativo-rh--análise-exploratória-de-dados)
