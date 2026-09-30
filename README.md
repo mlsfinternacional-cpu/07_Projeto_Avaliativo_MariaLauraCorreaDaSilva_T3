@@ -4,42 +4,41 @@
 
 ![Fluxo da análise](imagens/fluxo_analise_rh_geral.png)
 
-> Análise exploratória da base **Human Resources (HR)**, utilizando SQL para extração e relacionamento dos dados e Python para análise e visualização.
-
 ---
 
-## 🧭 Navegação
+## 📌 Navegação
 
-| | |
-|---|---|
-| [🎯 Objetivo](#-objetivo) | [🗂️ Dados](#️-dados) |
-| [🔗 Consultas SQL](#-consultas-sql) | [📊 Análise](#-análise) |
-| [💡 Resultados](#-resultados) | [⚠️ Limitações](#️-limitações) |
-| [🚀 Sugestões de melhoria](#-sugestões-de-melhoria) | [🛠️ Tecnologias](#️-tecnologias) |
-| [📁 Estrutura](#-estrutura-do-projeto) | [▶️ Execução](#️-como-executar) |
-| [🌿 Versionamento](#-versionamento) | [🎥 Vídeo](#-vídeo) |
+- [Objetivo](#-objetivo)
+- [Dados](#-dados)
+- [Consultas SQL](#-consultas-sql)
+- [Análise](#-análise)
+- [Resultados](#-resultados)
+- [Limitações](#-limitações)
+- [Sugestões de melhoria](#-sugestões-de-melhoria)
+- [Tecnologias e ferramentas](#️-tecnologias-e-ferramentas)
+- [Estrutura](#-estrutura)
+- [Como executar](#-como-executar)
+- [Versionamento](#-versionamento)
+- [Vídeo](#-vídeo)
+- [Licença](#-licença)
 
 ---
 
 ## 🎯 Objetivo
 
-Analisar a distribuição dos salários da base HR considerando **cargo, departamento e região**.
+Analisar a distribuição dos salários da base **Human Resources (HR)** considerando cargo, departamento e região.
 
-O projeto utiliza SQL para extração e relacionamento dos dados e Python para análise exploratória, estatística descritiva e visualização.
+O projeto utiliza **SQL** para extração e relacionamento dos dados e **Python** para análise exploratória, estatística descritiva e visualização.
 
 A análise é descritiva e não estabelece relações de causa e efeito.
-
-[⬆️ Voltar à navegação](#-navegação)
 
 ---
 
 ## 🗂️ Dados
 
-A análise utiliza o esquema **Human Resources (HR)** disponibilizado pelo FreeSQL.
+A análise utiliza o esquema **Human Resources (HR)** disponibilizado pelo [FreeSQL](https://freesql.com/).
 
-### Tabelas utilizadas
-
-| Tabela | Uso |
+| Tabela | Conteúdo |
 |---|---|
 | `HR.EMPLOYEES` | Funcionários, salários e cargos |
 | `HR.DEPARTMENTS` | Departamentos |
@@ -48,83 +47,64 @@ A análise utiliza o esquema **Human Resources (HR)** disponibilizado pelo FreeS
 | `HR.COUNTRIES` | Países |
 | `HR.REGIONS` | Regiões |
 
-`JOB_HISTORY` foi reconhecida no esquema, mas não faz parte do escopo das consultas.
+A tabela `JOB_HISTORY` foi reconhecida durante a exploração do esquema, mas ficou fora do escopo da análise.
 
-![Escopo do esquema HR](imagens/schema_hr_escopo.png)
-
-[⬆️ Voltar à navegação](#-navegação)
+![Esquema HR](imagens/schema_hr_escopo.png)
 
 ---
 
-## 🔗 Consultas SQL
+## 🔎 Consultas SQL
 
 ### Query 1 — Salários por departamento e cargo
 
-Relaciona:
+Relacionamento:
 
-```text
-EMPLOYEES → DEPARTMENTS → JOBS
-```
+`EMPLOYEES → DEPARTMENTS → JOBS`
 
-Utiliza pelo menos dois `LEFT JOIN` e aplica o filtro:
+A consulta utiliza `LEFT JOIN` e considera apenas funcionários com salário informado.
 
-```sql
-WHERE e.salary IS NOT NULL
-```
-
-**Arquivo:** `sql/query_1.sql`  
-**Resultado:** `data/query_01.csv`
+- Consulta: [`sql/query_1.sql`](sql/query_1.sql)
+- Resultado: [`data/query_01.csv`](data/query_01.csv)
 
 ### Query 2 — Funcionários e salários por região
 
-Relaciona:
+Relacionamento:
 
-```text
-EMPLOYEES → DEPARTMENTS → LOCATIONS → COUNTRIES → REGIONS
-```
+`EMPLOYEES → DEPARTMENTS → LOCATIONS → COUNTRIES → REGIONS`
 
-Utiliza `LEFT JOIN` ao longo do relacionamento e aplica:
+A consulta utiliza `LEFT JOIN` e considera apenas funcionários com salário informado.
 
-```sql
-WHERE e.salary IS NOT NULL
-```
+- Consulta: [`sql/query_2.sql`](sql/query_2.sql)
+- Resultado: [`data/query_02.csv`](data/query_02.csv)
 
-**Arquivo:** `sql/query_2.sql`  
-**Resultado:** `data/query_02.csv`
+### Consultas auxiliares
 
-### Arquivos auxiliares
+Utilizadas durante o reconhecimento das restrições e dos dados:
 
-```text
-sql/query_1_reconhecimento_constraints.sql
-sql/query_2_reconhecimento_dados.sql
-```
+- [`sql/query_1_reconhecimento_constraints.sql`](sql/query_1_reconhecimento_constraints.sql)
+- [`sql/query_2_reconhecimento_dados.sql`](sql/query_2_reconhecimento_dados.sql)
 
 ![Esquema técnico](imagens/schema_tecnico_rh.png)
-
-[⬆️ Voltar à navegação](#-navegação)
 
 ---
 
 ## 📊 Análise
 
-Os arquivos CSV gerados pelas consultas foram analisados em Python no notebook:
+Os arquivos CSV foram analisados no notebook [`notebooks/analise_rh.ipynb`](notebooks/analise_rh.ipynb).
 
-`notebooks/analise_rh.ipynb`
+A análise exploratória contempla:
 
-A EDA verificou:
-
-- estrutura e dimensões;
+- estrutura e dimensões dos dados;
 - tipos das variáveis;
-- primeiros registros;
-- valores ausentes;
-- duplicidades;
+- registros iniciais;
+- valores ausentes e duplicidades;
 - média, mediana, mínimo e máximo;
-- quartis e desvio padrão;
+- quartis e desvio-padrão;
 - distribuição dos salários.
 
-Foram analisados salários por **cargo, departamento e região**.
-
 ### Visualizações
+
+Foram produzidas visualizações da:
 
 - distribuição dos salários;
 - média salarial por cargo;
@@ -133,24 +113,18 @@ Foram analisados salários por **cargo, departamento e região**.
 
 ![Distribuição dos salários](imagens/distribuicao_salarios.png)
 
-[⬆️ Voltar à navegação](#-navegação)
-
 ---
 
-## 💡 Resultados
+## 📈 Resultados
 
 ### Salários
 
-| Medida | Resultado |
-|---|---:|
-| Funcionários com salário informado | **107** |
-| Média | **R$ 6.461,83** |
-| Mediana | **R$ 6.200,00** |
-| Máximo | **R$ 24.000,00** |
+- **107** funcionários com salário informado;
+- média: **R$ 6.461,83**;
+- mediana: **R$ 6.200,00**;
+- máximo: **R$ 24.000,00**.
 
-### Departamentos
-
-As médias salariais apresentaram diferenças entre os departamentos. Os valores observados foram:
+### Média salarial por departamento
 
 | Departamento | Média salarial |
 |---|---:|
@@ -166,51 +140,45 @@ As médias salariais apresentaram diferenças entre os departamentos. Os valores
 | Purchasing | R$ 4.150 |
 | Shipping | R$ 3.476 |
 
-A quantidade de funcionários de cada grupo deve ser considerada na leitura dessas médias.
+> O tamanho de cada grupo deve ser considerado na interpretação das médias.
 
-### Regiões
+### Distribuição por região
 
-| Região | Funcionários | Média salarial | Mediana |
+| Região | Registros | Média | Mediana |
 |---|---:|---:|---:|
 | Europe | 36 | R$ 8.916,67 | R$ 8.900,00 |
-| Americas | 70 | R$ 5.191,66 | R$ 3.300,00 |
+| Americas | 70 | R$ 5.191,67 | R$ 3.300,00 |
 | Sem informação geográfica | 1 | — | — |
 
-### 💡 Insight principal
+### Insight
 
-**A média salarial, sozinha, não explica a distribuição dos salários.**
+A média salarial, isoladamente, não explica a distribuição dos salários.
 
-A comparação entre média e mediana, junto com a dispersão e os valores extremos, mostra por que diferentes medidas precisam ser observadas em conjunto.
-
-[⬆️ Voltar à navegação](#-navegação)
+A comparação entre **média e mediana**, junto da dispersão e dos valores extremos, mostra por que diferentes medidas precisam ser observadas em conjunto.
 
 ---
 
 ## ⚠️ Limitações
 
-- A análise é descritiva e não permite estabelecer causalidade.
+- A análise é descritiva e não estabelece causalidade.
 - Alguns grupos possuem poucos registros.
-- Há um registro sem informação geográfica.
-- Outras variáveis que poderiam ajudar a explicar diferenças salariais não foram analisadas.
-
-[⬆️ Voltar à navegação](#-navegação)
+- Um registro não possui informação geográfica.
+- Outras variáveis que poderiam contribuir para explicar diferenças salariais não foram analisadas.
 
 ---
 
-## 🚀 Sugestões de melhoria
+## 💡 Sugestões de melhoria
 
-Para futuras versões:
-
-- incorporar outras variáveis disponíveis na base;
-- aprofundar a análise das diferenças salariais;
-- utilizar outras fontes de dados quando houver uma pergunta analítica que justifique sua combinação;
-- ampliar as visualizações conforme novas perguntas forem formuladas.
-
-[⬆️ Voltar à navegação](#-navegação)
+- Incorporar outras variáveis disponíveis na base.
+- Aprofundar a análise das diferenças salariais.
+- Utilizar outras fontes de dados quando uma questão analítica justificar a combinação.
+- Ampliar as visualizações conforme novas perguntas forem identificadas.
 
 ---
 
-## 🛠️ Tecnologias
+## 🛠️ Tecnologias e ferramentas
+
+### Análise e desenvolvimento
 
 - SQL
 - Python
@@ -219,16 +187,26 @@ Para futuras versões:
 - Matplotlib
 - Seaborn
 - Jupyter Notebook
-- Git/GitHub
+- [FreeSQL](https://freesql.com/)
+- Git / GitHub
 
-[⬆️ Voltar à navegação](#-navegação)
+### Produção
+
+- Microsoft Clipchamp
+
+### IA generativa
+
+O desenvolvimento do código contou com o **ChatGPT (OpenAI)** como apoio à programação, depuração, revisão e organização do código.
+
+As análises, consultas e resultados foram executados e validados pela autora. A IA foi utilizada como apoio ao desenvolvimento, não como substituta da análise ou da validação dos resultados.
 
 ---
 
-## 📁 Estrutura do projeto
+## 📁 Estrutura
 
 ```text
-.
+07_Projeto_Avaliativo_MariaLauraCorreaDaSilva_T3/
+│
 ├── data/
 │   ├── query_01.csv
 │   └── query_02.csv
@@ -248,11 +226,14 @@ Para futuras versões:
 │   ├── query_1_reconhecimento_constraints.sql
 │   └── query_2_reconhecimento_dados.sql
 │
+├── video/
+│   ├── Blocos_1_8/
+│   └── Projeto_RH_VIDEO_FINAL_leve.mp4
+│
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
-
-[⬆️ Voltar à navegação](#-navegação)
 
 ---
 
@@ -264,43 +245,37 @@ Para futuras versões:
 - Jupyter Notebook ou JupyterLab
 - Git
 
-### Instalação
-
-Criar o ambiente virtual:
+### Ambiente virtual
 
 ```bash
 python -m venv .venv
 ```
 
-No Windows, ativar:
+No Windows:
 
 ```bash
 .venv\Scripts\activate
 ```
 
-Instalar as bibliotecas:
+### Instalação
 
 ```bash
 pip install pandas numpy matplotlib seaborn jupyter
 ```
 
-### Execução
-
-Iniciar o Jupyter:
+### Executar o notebook
 
 ```bash
 jupyter notebook
 ```
 
-Abrir:
+Abra:
 
 ```text
 notebooks/analise_rh.ipynb
 ```
 
-Os arquivos `query_01.csv` e `query_02.csv` devem estar na pasta `data/`.
-
-[⬆️ Voltar à navegação](#-navegação)
+Os arquivos `query_01.csv` e `query_02.csv` devem estar no diretório `data/`.
 
 ---
 
@@ -310,24 +285,18 @@ O projeto foi desenvolvido em branches de trabalho, com commits separados por et
 
 A etapa de análise e documentação está na branch `feature/analise`, com integração posterior ao fluxo principal do projeto.
 
-[⬆️ Voltar à navegação](#-navegação)
-
 ---
 
 ## 🎥 Vídeo
 
-Apresentação técnica do projeto, com duração de até 7 minutos, mostrando rosto e tela.
+Vídeo final da apresentação e demonstração do projeto:
 
-**Link:** `[INSERIR LINK APÓS A GRAVAÇÃO]`
-
-[⬆️ Voltar à navegação](#-navegação)
+**[▶️ Assistir ao vídeo — Google Drive](https://drive.google.com/file/d/1wE9nMzrCdw5pySrF7aMl2QJy4yGQgXpE/view?usp=sharing)**
 
 ---
 
-## 📌 Conclusão
+## 📄 Licença
 
-A análise identificou diferenças salariais entre cargos, departamentos e regiões e mostrou que a média deve ser interpretada em conjunto com a mediana e a distribuição dos dados.
+Este projeto está licenciado sob a **MIT License**.
 
-O projeto reúne as etapas de extração em SQL, análise exploratória em Python e visualização dos resultados.
-
----
+Consulte o arquivo [`LICENSE`](LICENSE) para os termos completos.
