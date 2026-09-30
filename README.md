@@ -111,8 +111,6 @@ Foram produzidas visualizações da:
 - média salarial por departamento;
 - distribuição salarial por região.
 
-![Distribuição dos salários](imagens/distribuicao_salarios.png)
-
 ---
 
 ## 📈 Resultados
@@ -215,7 +213,6 @@ As análises, consultas e resultados foram executados e validados pela autora. A
 │   ├── fluxo_analise_rh_geral.png
 │   ├── schema_hr_escopo.png
 │   ├── schema_tecnico_rh.png
-│   └── distribuicao_salarios.png
 │
 ├── notebooks/
 │   └── analise_rh.ipynb
@@ -225,10 +222,6 @@ As análises, consultas e resultados foram executados e validados pela autora. A
 │   ├── query_2.sql
 │   ├── query_1_reconhecimento_constraints.sql
 │   └── query_2_reconhecimento_dados.sql
-│
-├── video/
-│   ├── Blocos_1_8/
-│   └── Projeto_RH_VIDEO_FINAL_leve.mp4
 │
 ├── .gitignore
 ├── LICENSE
